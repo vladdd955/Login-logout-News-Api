@@ -45,6 +45,24 @@ class RegisterService
                     ]
                 );
     }
+    
+    public function checkInLogin(): Navigation
+    {
+        $email =   $_POST['email'];
+        $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
+
+
+        $result = $this->connection->executeQuery('SELECT  id, name, email, password FROM news api.users WHERE email = ?', [$email]);
+        $user = $result->fetchAssociative();
+
+        if ($email == $user['email'] && $user['password'] == $password) {
+            echo "hey from register";
+
+            return new Navigation("/");
+        } else {
+            return new Navigation("/authorization");
+        }
+    }
 
 
 }
